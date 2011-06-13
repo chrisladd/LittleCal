@@ -1,0 +1,148 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" media="all" href="sprites.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+<div style="width: 600px; margin-left:auto; margin-right:auto; text-align:center; margin-top:100px;">
+
+<h1>littleCal.</h1>
+
+<h2>An introduction to CSS sprites by <a href="http://www.ladditude.com">Chris Ladd</a></h2>
+
+
+<input id="testInput" />
+
+<div id="testDiv">
+</div>
+
+
+<!-- 
+Little Cal Example 
+
+	See the CSS file for a more heavily commented description, but the idea is simple: You tag the outer element with the actual data, and then fill it with generic placeholders for that data. In the example below, there's a single-digit date, followed by a double digit date. Below, there's also some sample javascript to show how you might insert these pretty little calendars on a static page.
+
+	Note that the text inside these elements is irrelevent: the real formatting happens inside the classes you apply to the parent element. It's still nice to include the real date values inside the elements, though, for visually impaired users and to guard against users with poor browsers. It's also important to search engines. Remember: search engines can't see, either. It's all about text.
+
+-->
+
+<span class="littleCal lc_month_7 lc_day_single_1">
+	<span class="lc_pages">Date: </span>
+	<span class="lc_month">June </span>
+	<span class="lc_day_single">1</span>
+
+</span>
+
+
+<span class="littleCal lc_month_8 lc_day_first_2 lc_day_second_6">
+	<span class="lc_green"></span> 
+	<span class="lc_pages">Date: </span>
+	<span class="lc_month">October</span>
+	<span class="lc_day_first">26</span>
+	<span class="lc_day_second"></span>
+</span>
+
+
+
+
+
+<script type="text/javascript">
+
+	// this is a simple example of how you might use javascript to dynamically generate littleCal displays on a static page. note that if you have a dynamic site built with something like rails, it's better to assemble your littleCals in advance.
+
+	function buildLittleCal(divID, dateString) {
+		// declare our vars in advance, nicely.
+		var dayString;
+		var prettyString;
+
+		// get the div where we'll put our littleCal when we're done. We'll use this later.
+		var theDiv = document.getElementById(divID);
+
+		// split up that dateString. We're looking for dates formatted like this: 5/11, but if they have a year, e.g. 5/11/41, it's no problem -- the second param of the split method caps our array length at 2.
+		var divArray = dateString.split('/', 2);
+
+		// if we don't have a div array, get out, and clear the prospective div...
+		if (!divArray) {
+			theDiv.innerHTML = '';
+			return;
+		
+		}
+
+		
+		// if the div array is not 2, it's probably not representing a date.
+		if (divArray.length !== 2) {
+			theDiv.innerHTML = '';
+			return;
+		}	
+			
+
+
+		// parse these into integers. this will clear any leading 0's, whitespace, etc... 
+		var monthInt = parseInt(divArray[0], 10); // remember to use the radix parameter (10) to set the base number system.
+		var dayInt = parseInt(divArray[1], 10);
+
+		if (monthInt > 12 || monthInt < 1 || isNaN(monthInt) ) { // if the month is greater than 12, less than one, or not a number, get out
+			theDiv.innerHTML = '';
+			return;
+		}		
+		
+		if (dayInt > 31 || dayInt < 1 || isNaN(dayInt)) { // ditto for the day
+			theDiv.innerHTML = '';
+			return;
+		}
+	
+	
+		// build the date, and substitute it in for the div that was supplied
+		var dayString = dayInt.toString(10);			
+		
+		
+			// formatting will differ if the number is two digits or one.
+		if (dayInt > 9) {
+				// it's a double date
+	 			// what we're building: <span class="littleCal lc_month_5 lc_day_first_1 lc_day_second_6">
+			prettyString = '<span class="littleCal lc_month_' + monthInt + ' lc_day_first_' + dayString[0] + ' lc_day_second_' + dayString[1] + '">';
+			prettyString += '<span class="lc_pages">Date: </span>';
+			prettyString += '<span class="lc_month">' + monthInt + '</span>';
+			prettyString += '<span class="lc_day_first">' + '/' + '</span>';
+			prettyString += '<span class="lc_day_second">' + dayString + '</span>';
+			prettyString += '</span>';
+		
+		} else {
+			// solo
+	 			// what we're building: <span class="littleCal lc_month_5 lc_day_single_1">			
+			prettyString = '<span class="littleCal lc_month_' + monthInt + ' lc_day_single_' + dayString +'">';
+			prettyString += '<span class="lc_pages">Date: </span>';
+			prettyString += '<span class="lc_month">' + monthInt + '</span>';
+			prettyString += '<span class="lc_day_single">' + monthInt + '/' + dayString + '</span>';
+
+			prettyString += '</span>';
+		
+		}		
+	
+		// finally, if we've gotten here, we're a success! put the new littleCal HTML in our target div.
+		theDiv.innerHTML = prettyString;
+
+	}
+
+
+
+
+	// this is a simple example of how to use a jQuery binding to dynamically update your calendar.
+	$(document).ready(function(){
+		$('input#testInput').live('keyup', function(){
+			var theString = $(this).val();
+			buildLittleCal('testDiv', theString);
+		});
+
+	 });
+
+</script>
+
+
+</div>
+
+</body>
+
+</html>

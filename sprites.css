@@ -1,0 +1,229 @@
+/********** 
+littleCal 
+
+A CSS solution for interesting dates by Chris Ladd
+http://www.ladditude.com
+
+Free to use, MIT License
+
+Inspired by Lucas Smith's Calendar stamp, documented here:
+http://lucassmith.name/pub/calendar/stamp.html
+
+My implementation differs in a couple of ways -- first, it's smaller, both physically and on disk. And, second, it uses combinations of single digits to represent numbers greater than 9. So 10 is made up of 1 + 0. While using a single 'glyph' might be simpler, littleCal was designed as a teachable example for using sprites in web design, so I wanted to design something easily extendable. So, using the same technique, one could easily represent numbers from 1 to 31, but also 41, or 51, or 151. 
+
+The method, however, was entirely inspired by Lucas, and I hope he doesn't mind my ripping it off in this way.
+
+
+
+
+************/
+
+.sprite_bg { 
+    background-color: #777; 
+}
+
+/* Make sure everything is covered by the same background image. */
+.littleCal .lc_pages, .littleCal .lc_pinkPages, .littleCal .lc_month, .littleCal .lc_day_single, .littleCal .lc_day_first, .littleCal .lc_day_second { 
+    background: url(images/littleCalSprite.png) no-repeat 0 0; 
+} 
+
+
+/* This is applied to the parent element */
+.littleCal { 
+    display: inline-block; 
+    height: 38px; 
+    position: relative; 
+    width: 40px; 
+    background-position: -280px -10px;
+} 
+
+
+
+
+/* This is applied to a child element, which displays the pretty pages background image. */
+.littleCal .lc_pages { 
+
+    position: absolute; 
+    background-position: -2px -4px;
+
+    height: 38px; 
+    width: 40px; 
+    left: 0px; 
+    top: 0px; 
+
+    text-indent: -9999em; 
+} 
+
+/* An alternative to the standard pages, these are tinted red to, for example, indicate a past due appointment. */
+.littleCal .lc_pinkPages { 
+
+    position: absolute; 
+    background-position: -320px -10px;
+
+    height: 38px; 
+    width: 37px; 
+    left: 0px; 
+    top: 0px; 
+	z-index: 0;
+    text-indent: -9999em; 
+} 
+
+
+
+
+
+/* This code establishes the position of the numbers, words, etc... based on the class of the CHILD element. */
+
+.littleCal .lc_month { 
+	z-index: 5;
+    position: absolute; 
+    height: 15px; 
+    left: 7px; 
+    top: 2px; 
+    width: 28px; 
+    text-indent: -9999em; 
+
+} 
+
+
+
+.littleCal .lc_day_first { 
+    position: absolute; 
+    height: 15px; 
+    left: 10px; 
+    top: 14px; 
+    width: 10px; 
+    text-indent: -9999em; 
+} 
+
+
+.littleCal .lc_day_second { 
+    position: absolute; 
+    height: 15px; 
+    left: 19px; 
+    top: 14px; 
+    width: 20px; 
+    text-indent: -9999em; 
+} 
+
+
+.littleCal .lc_day_single { 
+    position: absolute; 
+    height: 15px; 
+    left: 14px; 
+    top: 14px; 
+    width: 20px; 
+    text-indent: -9999em; 
+    z-index: 100;
+} 
+
+
+
+/* This is where the offset is applied to the different classes -- essentially filling the window we created above with meaningful content, based on the CSS tag of the PARENT element 
+
+Do yourself a favor when constructing sprites: use regular increments where you can. For my money, it's worth it to waste a tiny bit of space to get a giant amount of designer/programmer relief. But that's just me.
+
+*/
+
+.lc_month_1  .lc_month { background-position: -100px -16px; } 
+.lc_month_2  .lc_month { background-position: -130px -16px; } 
+.lc_month_3  .lc_month { background-position: -160px -16px; } 
+.lc_month_4  .lc_month { background-position: -190px -16px; } 
+.lc_month_5  .lc_month { background-position: -220px -16px; } 
+.lc_month_6  .lc_month { background-position: -250px -16px; } 
+
+.lc_month_7  .lc_month { background-position: -100px -30px; } 
+.lc_month_8  .lc_month { background-position: -130px -30px; } 
+.lc_month_9  .lc_month { background-position: -160px -30px; } 
+.lc_month_10 .lc_month { background-position: -190px -30px; } 
+.lc_month_11 .lc_month { background-position: -220px -30px; } 
+.lc_month_12 .lc_month { background-position: -250px -30px; } 
+
+
+
+
+/* Again, make things easy on yourself, if you can: align your sprites in a recognizable pattern. Notice how each day is offset by 20px */
+.lc_day_single_1 .lc_day_single, .lc_day_first_1 .lc_day_first, .lc_day_second_1 .lc_day_second  { background-position: -100px -0px;  } 
+.lc_day_single_2 .lc_day_single, .lc_day_first_2 .lc_day_first, .lc_day_second_2 .lc_day_second  { background-position: -120px -0px;  } 
+.lc_day_single_3 .lc_day_single, .lc_day_first_3 .lc_day_first, .lc_day_second_3 .lc_day_second  { background-position: -140px -0px; } 
+.lc_day_single_4 .lc_day_single, .lc_day_first_4 .lc_day_first, .lc_day_second_4 .lc_day_second  { background-position: -160px -0px; } 
+.lc_day_single_5 .lc_day_single, .lc_day_first_5 .lc_day_first, .lc_day_second_5 .lc_day_second  { background-position: -180px -0px; } 
+.lc_day_single_6 .lc_day_single, .lc_day_first_6 .lc_day_first, .lc_day_second_6 .lc_day_second  { background-position: -200px -0px; } 
+.lc_day_single_7 .lc_day_single, .lc_day_first_7 .lc_day_first, .lc_day_second_7 .lc_day_second  { background-position: -220px -0px; } 
+.lc_day_single_8 .lc_day_single, .lc_day_first_8 .lc_day_first, .lc_day_second_8 .lc_day_second  { background-position: -240px -0px; } 
+.lc_day_single_9 .lc_day_single, .lc_day_first_9 .lc_day_first, .lc_day_second_9 .lc_day_second  { background-position: -260px -0px; } 
+.lc_day_single_0 .lc_day_single, .lc_day_first_0 .lc_day_first, .lc_day_second_0 .lc_day_second  { background-position: -280px -0px; } 
+
+
+
+
+/* 
+	These are all optional elements that style the little box part of the calendar, behind the month name. Apply these to a separate child element. 
+
+*/
+.littleCal .lc_tan { 
+
+	z-index: 3;
+    text-indent: -9999em; 
+} 
+
+.littleCal .lc_black { 
+	z-index: 3;
+
+    position: absolute; 
+    background-position: -360px -10px;
+
+    height: 10px; 
+    width: 35px; 
+    left: 4px; 
+    top: 2px; 
+
+    text-indent: -9999em; 
+} 
+
+.littleCal .lc_red { 
+	z-index: 3;
+
+    position: absolute; 
+    background-position: -360px -30px;
+	
+    height: 10px; 
+    width: 35px; 
+    left: 4px; 
+    top: 2px; 
+
+    text-indent: -9999em; 
+} 
+
+.littleCal .lc_blue { 
+	z-index: 3;
+
+    position: absolute; 
+    background-position: -400px -30px;
+	
+    height: 10px; 
+    width: 35px; 
+    left: 4px; 
+    top: 2px; 
+
+    text-indent: -9999em; 
+} 
+
+
+.littleCal .lc_green { 
+	z-index: 3;
+
+    position: absolute; 
+    background-position: -400px -10px;
+	
+    height: 10px; 
+    width: 35px; 
+    left: 4px; 
+    top: 2px; 
+
+    text-indent: -9999em; 
+} 
+
+
+
+
